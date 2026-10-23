@@ -1,0 +1,14 @@
+﻿@model IEnumerable<MPPLab1.Models.Category>
+<h2>Categories</h2>
+
+<form asp-action="Create" method="post" class="mb-4 d-flex gap-2">
+    <input type="text" name="Name" class="form-control" placeholder="Category Name" required />
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<ul class="list-group">
+    @foreach (var c in Model)
+    {
+        <li class="list-group-item">@c.Name</li>
+    }
+</ul>

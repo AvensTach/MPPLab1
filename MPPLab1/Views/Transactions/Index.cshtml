@@ -1,0 +1,65 @@
+﻿@model IEnumerable<MPPLab1.Models.Transaction>
+<h2>Transactions</h2>
+<h5>Total amount (filtered): @ViewBag.TotalAmount</h5>
+
+<form method="get" class="mb-3">
+    <select name="walletId" class="form-select w-25" onchange="this.form.submit()">
+        <option value="">All Wallets</option>
+        @foreach (var w in ViewBag.Wallets)
+        {
+            <option value="@w.Id" selected="@(w.Id == ViewBag.SelectedWalletId)">@w.Name</option>
+        }
+    </select>
+</form>
+
+<form asp-action="Create" method="post" class="mb-4 row g-2">
+    <div class="col">
+        <select name="WalletId" class="form-select" required>
+            @foreach (var w in ViewBag.Wallets)
+            {
+                <option value="@w.Id">@w.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col">
+        <select name="CategoryId" class="form-select" required>
+            @foreach (var c in ViewBag.Categories)
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col">
+        <input type="number" name="Amount" class="form-control" placeholder="Amount" step="0.01" required />
+    </div>
+    <div class="col">
+        <input type="text" name="Description" class="form-control" placeholder="Description" />
+    </div>
+    <div class="col">
+        <button type="submit" class="btn btn-primary w-100">Create</button>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Wallet</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model)
+        {
+            <tr>
+                <td>@t.Date.ToString("g")</td>
+                <td>@t.Wallet?.Name</td>
+                <td>@t.Category?.Name</td>
+                <td>@t.Amount</td>
+                <td>@t.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
