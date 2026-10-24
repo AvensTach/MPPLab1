@@ -13,22 +13,21 @@ public class TransactionsController : Controller
 
     public async Task<IActionResult> Index(int? walletId)
     {
-        // Отримання пов'язаних даних
         IQueryable<Transaction> query = _context.Transactions
             .Include(t => t.Wallet)
             .Include(t => t.Category);
 
-        // Фільтрація
+        // Filter
         if (walletId.HasValue && walletId > 0)
         {
             query = query.Where(t => t.WalletId == walletId.Value);
         }
 
-        // Сортування
+        // Sort
         var transactions = await query.OrderByDescending(t => t.Date).ToListAsync();
 
-        // Агрегування
-        ViewBag.TotalAmount = await query.SumAsync(t => t.Amount);
+        // Agregation
+        ViewBag.TotalAmount = transactions.Sum(t => t.Amount);
 
         ViewBag.Wallets = await _context.Wallets.ToListAsync();
         ViewBag.Categories = await _context.Categories.ToListAsync();
@@ -43,7 +42,7 @@ public class TransactionsController : Controller
         var wallet = await _context.Wallets.FindAsync(transaction.WalletId);
         if (wallet != null)
         {
-            wallet.Balance += transaction.Amount; // Оновлення балансу
+            wallet.Balance += transaction.Amount;
             _context.Add(transaction);
             await _context.SaveChangesAsync();
         }
