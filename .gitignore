@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/MPPLab1/finance.db-wal
+/MPPLab1/finance.db-shm
